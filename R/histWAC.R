@@ -115,22 +115,43 @@ histWAC <- function (x, weights = NA, Exceedance = FALSE, ADD = FALSE,
         }
         if (plot) {
             xrg <- range(h$breaks)
+            nmdots <- names(list(...))
             if (freq) {
-                if ("ylab" %in% names(list(...))) {
-                    plot(h$breaks[-1], h$counts, type='S', xaxt='n', yaxt='n', 
-                         log=logAxis, xlim=xrg, ...)      
+                if ("ylab" %in% nmdots) {
+                    if ('xlim' %in% nmdots) {    
+                        plot(h$breaks[-1], h$counts, type='S', xaxt='n', yaxt='n', 
+                             log=logAxis, ...)  
+                    } else {
+                        plot(h$breaks[-1], h$counts, type='S', xaxt='n', yaxt='n', 
+                         log=logAxis, xlim=xrg, ...)
+                    }
                 } else {
-                    plot(h$breaks[-1], h$counts, type='S', xaxt='n', yaxt='n', 
-                         ylab=ylab, log=logAxis, xlim=xrg, ...)     
+                    if ('xlim' %in% nmdots) {  
+                        plot(h$breaks[-1], h$counts, type='S', xaxt='n', yaxt='n', 
+                         ylab=ylab, log=logAxis, ...)     
+                    } else {
+                        plot(h$breaks[-1], h$counts, type='S', xaxt='n', yaxt='n', 
+                             ylab=ylab, log=logAxis, xlim=xrg, ...)
+                    }
                 }
                 lines (h$breaks[1:2], c(0,h$counts[1]), type='S')
             } else {
-                if ("ylab" %in% names(list(...))) {
-                    plot(h$breaks[-1], h$density, type='S', xaxt='n', yaxt='n', 
+                if ("ylab" %in% nmdots) {
+                    if ('xlim' %in% nmdots) { 
+                        plot(h$breaks[-1], h$density, type='S', xaxt='n', yaxt='n', 
+                             log=logAxis, ...)
+                    } else {
+                        plot(h$breaks[-1], h$density, type='S', xaxt='n', yaxt='n', 
                          log=logAxis, xlim=xrg, ...)
+                    }
                 } else {
-                    plot(h$breaks[-1], h$density, type='S', xaxt='n', yaxt='n', 
+                    if ('xlim' %in% nmdots) { 
+                        plot(h$breaks[-1], h$density, type='S', xaxt='n', yaxt='n', 
+                             ylab=ylab, log=logAxis,  ...)
+                    } else {
+                        plot(h$breaks[-1], h$density, type='S', xaxt='n', yaxt='n', 
                          ylab=ylab, log=logAxis, xlim=xrg,  ...)
+                    }
                 }
                 lines (h$breaks[1:2], c(0,h$density[1]), type='S')
             }

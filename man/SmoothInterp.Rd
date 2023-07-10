@@ -5,7 +5,13 @@
 \alias{smoothInterp}
 \title{SmoothInterp}
 \usage{
-SmoothInterp(.timeSeries, .maxGap = 1000, .Length = 61, .order = 3)
+SmoothInterp(
+  .timeSeries,
+  .maxGap = 1000,
+  .Length = 61,
+  .order = 3,
+  .minMeas = 100
+)
 }
 \arguments{
 \item{.timeSeries}{A numeric vector containing a series to be smoothed.}
@@ -17,6 +23,11 @@ SmoothInterp(.timeSeries, .maxGap = 1000, .Length = 61, .order = 3)
 If .Length <= 1 there will be no smoothing, only interpolation.}
 
 \item{.order}{The order of the polynomials to be used for filtering.}
+
+\item{.minMeas}{The minimum series length (not including NAs) to
+perform interpolation. Default: 100. This value previously was coded
+into the routine, but caused unreported problems for short series, so
+this parameter was added with a default equal to the previous setting.}
 }
 \value{
 The smoothed and filtered series as a vector.

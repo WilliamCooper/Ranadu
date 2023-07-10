@@ -19,7 +19,7 @@ Description: This package contains a function for loading a portion of a netCDF
     corresponding to a specified water vapor pressure), PressureAltitude,
     PotentialTemperature, EquivalentPotentialTemperature, Sqs (the quasi-steady
     supersaturation in cloud given the updraft and droplet size distribution), 
-    WetEquivalentPotentialTemperature, MixingRatio, VirtualTemperature,
+   wet-bulb temperature, WetEquivalentPotentialTemperature, MixingRatio, VirtualTemperature,
     VirtualPotentialTemperature, and plotWAC, lineWAC and histWAC (convenience 
     routines producing some aspects of plots I use routinely). A skew-T 
     background is provided by SkewT.R. A routine for generating plots of 
@@ -38,7 +38,7 @@ Imports:
 Suggests:
     magrittr
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Collate: 
     'AOAfromRadome.R'
     'AdiabaticTandLWC.R'
@@ -83,6 +83,7 @@ Collate:
     'TrueAirspeed.R'
     'zzz.R'
     'VSpec.R'
+    'Viscosity.R'
     'WindProcessor.R'
     'XformLA.R'
     'addLabels.R'
@@ -92,6 +93,7 @@ Collate:
     'contourPlot.R'
     'correctT.R'
     'df2tibble.R'
+    'fallv.R'
     'flux.R'
     'getNetCDF.R'
     'getProjectData.R'
@@ -99,6 +101,7 @@ Collate:
     'getRData.R'
     'getarg.R'
     'ggplotWAC.R'
+    'heatIndex.R'
     'histWAC.R'
     'makeNetCDF.R'
     'mem.R'
