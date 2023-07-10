@@ -7,7 +7,8 @@
 #' you can use DPfromE() to find the dewpoint. The
 #' input parameters may be vectors, all of the same size, and in that
 #' case the result will also be a vector. In addition, the function
-#' calculates an apparent temperature described in XXX that
+#' calculates an apparent temperature described in 
+#' https://rpubs.com/cooperwilliama/1061588 that
 #' can be used as an alternative to the heat index.
 #' @aliases heatIndex, HeatIndex, heatindex
 #' @author William Cooper
