@@ -427,7 +427,7 @@ VSpec <- function (.data, .Variable=NA, VLabel=NA, col=NA, type='spectrum',
       aveEDR <- mean(fpf[imn:imx], na.rm=TRUE)
       ttl <- sprintf ('EDR=%.2e', aveEDR)
       DFL <- data.frame(x=c(freq[imn], freq[imx]), y=rep(aveEDR, 2))
-      g <- g + geom_path(data=DFL, aes(x=x, y=y), lwd=1.5, colour='red')
+      g <- g + geom_path(data=DFL, aes(x=x, y=y), linewidth=1.5, colour='red')
       g <- g + ggtitle (bquote(.(ttl) ~ ' m'^2 ~ 's'^-3))
       # g <- g + ggtitle(sprintf(' mean eddy dissipation rate %.2e m^2/s^3', aveEDR))
     } else {
@@ -436,7 +436,7 @@ VSpec <- function (.data, .Variable=NA, VLabel=NA, col=NA, type='spectrum',
         lw = ifelse(i == -4, 1.2, 0.5)
         DFL <- data.frame(x=xlim, y=c(a/xlim[1]^(2/3), a/xlim[2]^(2/3)))
         # print(DFL)
-        g <- g + geom_path (data=DFL, aes(x=x, y=y), colour='darkorange', lwd=lw, lty=3)
+        g <- g + geom_path (data=DFL, aes(x=x, y=y), colour='darkorange', linewidth=lw, lty=3)
       }
     }
     if (WavelengthScale) {
@@ -444,16 +444,16 @@ VSpec <- function (.data, .Variable=NA, VLabel=NA, col=NA, type='spectrum',
       lclr <- 'slategrey'
       for (j1 in c(10, 100, 1000, 10000, 100000)) {
         DFL2 <- data.frame(x=rep(tasAverage/j1, 2), y=yl)
-        g <- g + geom_path(data=DFL2, aes(x=x, y=y), colour=lclr, lwd=1.0)
+        g <- g + geom_path(data=DFL2, aes(x=x, y=y), colour=lclr, linewidth=1.0)
         if (j1 != 100000) {
           for (j2 in 2:9) {
             DFL2 <- data.frame(x=rep(tasAverage/(j1*j2),2), y=yl)
-            g <- g + geom_path(data=DFL2, aes(x=x, y=y), colour=lclr, lwd=0.6)
+            g <- g + geom_path(data=DFL2, aes(x=x, y=y), colour=lclr, linewidth=0.6)
           }
         }
       }
       DFL2 <- data.frame (x=tasAverage*c(1/10, 1/100000), y=rep(yl[1], 2))
-      g <- g + geom_path(data=DFL2, aes(x=x, y=y), colour=lclr, lwd=1.0)
+      g <- g + geom_path(data=DFL2, aes(x=x, y=y), colour=lclr, linewidth=1.0)
       g <- g + annotate("text", 
         x = tasAverage*c(1/100000, 1/10000, 1/1000, 1/100, 1/10), 
         y = rep(yl[2]*1.5,5), label = c("100 km", "10 km", "1 km", "0.1 km", " "),

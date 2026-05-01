@@ -137,8 +137,8 @@ DSKT <- tibble::tibble ("P"=Pressure, "AT"=Temperature, "DP"=DewPoint)
   AT <- DSKT$AT
   DP <- DSKT$DP
   P <- DSKT$P
-  g <- g + geom_path (data=DSKT, aes (x=AT, y=P, color="T"),  lwd=1.0)
-  g <- g + geom_path (data=DSKT, aes (x=DP, y=P, color="DP"), lwd=1.0,
+  g <- g + geom_path (data=DSKT, aes (x=AT, y=P, color="T"),  linewidth=1.0)
+  g <- g + geom_path (data=DSKT, aes (x=DP, y=P, color="DP"), linewidth=1.0,
                       alpha=0.8)
   g <- g + scale_fill_discrete (breaks=c("DP", "T"))
   g <- g + theme (legend.position=c(0.2,0.85), legend.background=element_rect(fill="ivory"))

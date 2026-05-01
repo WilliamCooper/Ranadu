@@ -31,11 +31,11 @@ Rsubset <- function (Data, StartT=0, EndT=0, Var=NULL, Test=TRUE) {
 #   if (typeof (substitute (Var)) == "symbol") {
 #     Var <- deparse (substitute (Var))
 #   }
-  if (is.null (Var)) {Var <- "ALL"}
+  if (is.null (Var[1])) {Var <- "ALL"}
 #   if (is.symbol (Var)) {print ("yes, symbol")}
 #   if (is.character (Var)) {print ("yes char")}
 #   print (Var)
-  if (Var == 'ALL' || Var == 'All') {
+  if (Var[1] == 'ALL' || Var[1] == 'All') {
     D <- subset (Data[setRange (Data, StartT, EndT), ], Test, c(names (Data)))
   } else {
     D <- subset (Data[setRange (Data, StartT, EndT), ], Test, c("Time", Var))
