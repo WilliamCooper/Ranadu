@@ -1,3 +1,9 @@
+Version 2.7-26-05-05
+  Updates:
+    ggplotWAC.R and similar   -- modifications to correspond with new
+                                 recommendations and requirements in
+                                 package ggplot2
+    theme_WAC.R               --   "  "
 Version 2.6-23-07-10
   Additions:
     heatIndex.R              -- New function to duplicate NWS heat index
