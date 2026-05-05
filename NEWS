@@ -1,11 +1,75 @@
+Version 2.7-26-05-05
+  Updates:
+    ggplotWAC.R and similar   -- modifications to correspond with new
+                                 recommendations and requirements in
+                                 package ggplot2
+    theme_WAC.R               --   "  "
+Version 2.6-23-07-10
   Additions:
+    heatIndex.R              -- New function to duplicate NWS heat index
+  Updates:
+    SmoothInterp.R           -- A new parameter .minMeas was added
+Version 2.6-22-07-08
+  Additions:
+    GoffGratch()            -- Added function in function MurphyKoop.R
+  Updates:
+    binStats.R              -- modified to accepted specified breaks
+    histWAC.R               -- added ability to plot weighted histogram,
+                               and made some corrections to bin limits
+Varsion 2.6-22-05-07
+  Updates:
+    getNetCDF.R             -- Some changes for 100 and 50 Hz variables
+    getProjectData.R        -- Modify to work with 25-Hz files
+    misc                    -- There were a few documentation changes 
+Version 2.6-22-3-7
+  Updates:
+    getNetCDF.R             -- protection against Bins inconsistency for UHSAS
+    DataFileInfo.R          -- accepts old-style Time with base_time
+    getNetCDF.R             -- accepts old-style Time with base_time
+    correctT.R              -- mods for old-style TT vs RT
+    plotSD.R                -- addition for old-format FSSP; some other mods.
+Version 2.6-21-8-7
+  Addition:
+    wetbulbT.R              -- calculates the wet-bulb temperature
+  Updates:
+    flux.R                  -- minor updates to plot
+Version 2.6-21-4-5
+  Additions:
+    Dockerfile              -- instructions to build docker container
+    getRData.R              -- interactively select a data file and variables
+  Updates:
+    server.R                -- fixed some transferAttributes() calls
+                            -- now creates "SpecialGraphics" directory if absent
+    CAPE.R                  -- added capability to return updraft profiles
+    PotentialTemperatures.R -- corrected coding error affecting virtual temp.
+Version 2.6-20-10-10
+  Additions:
+    histWAC.R               -- plot histogram with added cumulative d.f.
+    setFileName.R           -- construct path to netCDF file
+    rk4.integrate.R         -- Runge-Kutta Cash-Karp numerical integration
+  Updates:
+    VSpec.R                 -- modified to calculate Rate if attribute NA
+    PlotWAC.R               -- trivial change: "degree" to \u00b0C for RStudio
+    ggplotWAC.R             --  "" same
+    contourPlot.R           -- changed how a fit line is specified
+    getNetCDF.R             -- additional mods for high-rate size distributions  
+Version 2.6-20-05-15
+  Additions:
+    flux.R                  -- calculate eddy-correlation flux
+    Rmutate.R               -- define new variables, esp. in pipes
+    getProjectData.R        -- load a composite data.frame for a project
     df2tibble.R             -- convert standard Ranadu data.frame to tibble
     selectTimes.R           -- add capability to set times in pipes
+    WACf.R                  -- gives a list of statistics like mean, sd
+    potentialTemperatures.R -- gives a set of results for potential temperatures
+    blankNA.R               -- set missing-values so plots show gaps
   Updates:
     getNetCDF.R             -- change for high-rate size spectra
     ggplotWAC.R             -- correction to variable-name in ggplot
     shinyApp:               -- suppress time reset on change from LR to HR
     DataFileInfo:           -- added output of Measurands and LongNames
+    getAttributes.R         -- made return invisible to avoid duplicate listings
+    TellAbout.R             -- small changes.
 Version 2.5-18-11-02
   Additions:
     plotSD.R                -- plots of size distributions, incl LWC distribution

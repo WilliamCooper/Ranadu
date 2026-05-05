@@ -4,10 +4,24 @@
 \alias{plotSD}
 \title{plotSD}
 \usage{
-plotSD(data, CellLimits = NA, logAxis = "", ucon = rep(NA, 5),
-  col = "blue", FirstCell = rep(1, 5), title = NA, lwd = rep(2, 5),
-  xlim = NA, ylim = NA, CDF = FALSE, LWC = FALSE, addBar = FALSE,
-  ADD = FALSE, legend.position = NA, ...)
+plotSD(
+  data,
+  CellLimits = NA,
+  logAxis = "",
+  ucon = rep(NA, 5),
+  col = "blue",
+  FirstCell = rep(1, 5),
+  title = NA,
+  lwd = rep(2, 5),
+  xlim = NA,
+  ylim = NA,
+  CDF = FALSE,
+  LWC = FALSE,
+  addBar = FALSE,
+  ADD = FALSE,
+  legend.position = NA,
+  ...
+)
 }
 \arguments{
 \item{data}{A data.frame containing "Time" and one size-distribution variable to be plotted, as the second column after "Time". 
@@ -19,7 +33,7 @@ CellLimits=NA, ucon=1.e-4, ADD=TRUE)".}
 
 \item{CellLimits}{A vector containing the bin limits for the data. This is usually obtained from "attr(Data$CCDP_LWOI, 'CellSizes').
 It represents the lower limits of the bins, so it should have one more entry than the number of columns in data to represent
-the upper limit of the last bin. The deault is a vector of bin limits applicable to the CDP. If the supplied value is NA, the vector 
+the upper limit of the last bin. The default is a vector of bin limits applicable to the CDP. If the supplied value is NA, the vector 
 will be loaded from the attribute. In this case, if the attribute is unavailable, the function will fail. Don't use the standard
 plot parameter 'log' because, while logarithmic axes will be generated, the weighted distribution won't be constructed.}
 

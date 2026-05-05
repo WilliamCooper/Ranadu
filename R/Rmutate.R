@@ -19,29 +19,8 @@
 #' @param ... A set of definitions that will be used to construct new variables.
 #' For example, DPD=ATX-DPXC, WICby2=WIC/2
 #' @return A new data.frame or tibble with the new variables included.
-#' @example DS <- Rmutate(RAFdata, DPD = ATX - DPXC)
+#' @example DS <- Ranadu::Rmutate(RAFdata, DPD = ATX - DPXC)
 Rmutate <- function (.d, ...) {
-  transferAttributes <- function (d, dsub) {  
-    ds <- dsub
-    ## ds and dsub are the new variables; d is the original
-    for (nm in names (ds)) {
-      var <- sprintf ("d$%s", nm)
-      A <- attributes (eval (parse (text=var)))
-      if (!grepl ('Time', nm)) {
-        A$dim[1] <- nrow(ds)
-        A$class <- NULL
-      } else {
-        A$dim <- nrow (ds)
-      }
-      attributes (ds[,nm]) <- A
-    }
-    A <- attributes (d)
-    A$Dimensions$Time$len <- nrow (ds)
-    A$row.names <- 1:nrow (ds)
-    A$names <- names (ds)
-    attributes (ds) <- A
-    return(ds)
-  }
   dt <- dplyr::mutate(.d, ...)
   return (transferAttributes(.d, dt))
 }

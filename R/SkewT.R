@@ -71,7 +71,7 @@ SkewTSounding <- function (Pressure=NA, Temperature=NA, DewPoint=NA,
   ## A function for translation between the P-T coordinates and the skew-T plot coordinates:
   ##    (note, expects tTop etc in calling environment, so not explicitly passed.)
   XYplot <- function (.T, .p) { 
-    return (data.frame(
+    return (tibble::tibble(
       X=(.T-tBot) / (tTop-tBot) - log10(.p/pBot) / log10(pBot/pTop), 
       Y=log10(.p)))
   }
@@ -122,7 +122,7 @@ SkewTSounding <- function (Pressure=NA, Temperature=NA, DewPoint=NA,
     DewPoint <- AVDP$stats["mean", ]
   }
 
-DSKT <- data.frame ("P"=Pressure, "AT"=Temperature, "DP"=DewPoint)
+DSKT <- tibble::tibble ("P"=Pressure, "AT"=Temperature, "DP"=DewPoint)
   
   ## convert to plot coordinates:
   DSKT$AT  <- XYplot (Temperature, Pressure)$X
@@ -137,8 +137,8 @@ DSKT <- data.frame ("P"=Pressure, "AT"=Temperature, "DP"=DewPoint)
   AT <- DSKT$AT
   DP <- DSKT$DP
   P <- DSKT$P
-  g <- g + geom_path (data=DSKT, aes (x=AT, y=P, color="T"),  lwd=1.0)
-  g <- g + geom_path (data=DSKT, aes (x=DP, y=P, color="DP"), lwd=1.0,
+  g <- g + geom_path (data=DSKT, aes (x=AT, y=P, color="T"),  linewidth=1.0)
+  g <- g + geom_path (data=DSKT, aes (x=DP, y=P, color="DP"), linewidth=1.0,
                       alpha=0.8)
   g <- g + scale_fill_discrete (breaks=c("DP", "T"))
   g <- g + theme (legend.position=c(0.2,0.85), legend.background=element_rect(fill="ivory"))

@@ -16,6 +16,7 @@ library(grid)
 library(XML)
 library(tcltk)
 library(scales)
+library(ggthemes)
 library(allanvar)
 
 ## temporary
@@ -23,7 +24,7 @@ library(allanvar)
 
 # source ('R/plotTrack.R')
 # source ('R/PlotWAC.R')
-source ('R/getNetCDF.R')
+# source ('R/getNetCDF.R')
 # source ('R/makeNetCDF.R')
 # source ('R/setVariableList.R')
 # source ('R/CAPE.R')
@@ -32,17 +33,27 @@ source ('R/getNetCDF.R')
 ## indicating which functions are entered, to trace the sequence
 ## of interactions when window entries are changed.
 Trace <- FALSE
-Trace <- TRUE
-load ('InputDF.Rdata')
+# Trace <- TRUE
+load ('inst/InputDF.Rdata')
 xVarList <- standardVariables()
 
 ## assemble a list of projects for which an appropriately named rf01
 ## exists in the data directory:
 
-PJ <- c('ECLIPSE2019', 'OTREC-TEST', 'WECAN', 'SOCRATES', 'WECAN-TEST', 'ARISTO2017', 'ECLIPSE', 'ORCAS', 'CSET', 'NOREASTER', 'HCRTEST', 'WINTER', 'NOMADSS',
+PJ <- c('WCR-TEST', 'ECLIPSE2019', 'OTREC-TEST', 'WECAN', 'SOCRATES', 'WECAN-TEST', 'ARISTO2017', 'ECLIPSE', 'ORCAS', 'CSET', 'NOREASTER', 'HCRTEST', 'WINTER', 'NOMADSS',
   'DEEPWAVE', 'CONTRAST', 'SPRITE-II', 'MPEX', 'DC3', 'RICO',
   'TORERO', 'HIPPO-5', 'HIPPO-4', 'HIPPO-3', 'HIPPO-2',
   'HIPPO-1','PREDICT', 'START08', 'PACDEX', 'TREX')
+### Replace this by constructing a list of available projects
+## by searching the DataDirectory(). That way a new project will
+## be incorporated automatically.
+PJ <- list.dirs(path = DataDirectory(), full.names = FALSE, recursive = FALSE)
+PJ <- PJ[-which('lost+found' == PJ)]
+## Leave in alphabetical order, except for the first which is the latest modified.
+FullPJ <- paste0(DataDirectory(), PJ)
+iw <- which.max(file.mtime(FullPJ))
+PJ <- c(PJ[iw], PJ[-iw])
+
 for (P in PJ) {
   if (grepl('HIPPO', P)) {
     fn <- sprintf ('%sHIPPO/%srf01.nc', DataDirectory (), P)
@@ -352,7 +363,7 @@ specialVar <- function (D) {
   ACINS <- zoo::na.approx (as.vector(D$ACINS), maxgap=10000, na.rm=FALSE)
   ACINS[is.na(ACINS)] <- 0
   WPSTAR <- cumsum(ACINS)
-  print (summary(WPSTAR))
+  if(Trace) {print (summary(WPSTAR))}
   DIF <- zoo::na.approx (as.vector(WPPRIME-WPSTAR), maxgap=10000, na.rm=FALSE)
   DIF[is.na(DIF)] <- 0
   DIF <<- DIF
@@ -742,47 +753,6 @@ if (plotSpec$Times[2] < times[2]) {times <- c(times[1], plotSpec$Times[2])}
 # Restrictions[1, 'min'] <- 130
 # Restrictions[1, 'max'] <- 300
 defFiles <- list.files(pattern = "^plotSpec")
-# transferAttributes <- function (dsub, d) {    
-#   ds <- dsub
-#   for (nm in names (ds)) {
-#     var <- sprintf ("d$%s", nm)
-#     A <- attributes (eval (parse (text=var)))
-#     A[[1]] <- nrow (ds)
-#     # print (sprintf ('transfer attributes, nm=%s, var=%s', nm, var))
-#     # print (A)
-#     if (!grepl ('Time', nm)) {
-#       A$dim <- NULL
-#       A$class <- NULL
-#     }
-#     attributes (ds[,nm]) <- A
-#   }
-#   return(ds)
-# }
-transferAttributes <- function (dsub, d) {    
-  ds <- dsub
-  ## ds and dsub are the new variables; 
-  ## d is the original with attributes
-  for (nm in names (ds)) {
-    if ((nm != 'Time') && exists ('specialData') &&  
-        (nm %in% names (specialData))) {next}
-    var <- sprintf ("d$%s", nm)
-    A <- attributes (eval (parse (text=var)))
-    if (!grepl ('Time', nm)) {
-      A$dim[1] <- nrow(ds)
-      A$class <- NULL
-    } else {
-      A$dim <- nrow (ds)
-    }
-    # print (sprintf ('tA: nm=%s, A=%s', nm, A))
-    attributes (ds[,nm]) <- A
-  }
-  A <- attributes (d)
-  A$Dimensions$Time$len <- nrow (ds)
-  A$row.names <- 1:nrow (ds)
-  A$names <- names (ds)
-  attributes (ds) <- A
-  return(ds)
-}
 
 saveRdata <- function (Data, inp) {
   print ('entered saveRdata')

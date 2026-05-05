@@ -34,7 +34,8 @@ PotentialTemperature <- function (P, AT, E=0.) {
 #' @return A numeric representing the pseudo-adiabatic equivalent potential temperature in kelvin.
 #' @examples 
 #' THETAP <- EquivalentPotentialTemperature (700., 10., 9.) 
-#' THETAP <- EquivalentPotentialTemperature (RAFdata$PSXC, RAFdata$ATX, RAFdata$EWX)
+#' THETAP <- EquivalentPotentialTemperature (
+#'           RAFdata$PSXC, RAFdata$ATX, RAFdata$EWX)
 EquivalentPotentialTemperature <- function (P, AT, E=0) {
 # Davies-Jones pseudo-adiabatic equivalent potential 
 # temperature. Needs P, AT, E (hPa, degC, hPa).
@@ -127,7 +128,8 @@ BoltonEquivalentPotentialTemperature <- function (P, AT, E=0) {
 VirtualTemperature <- function (AT, r) {
 # Virtual Temperature, fn of AT (degC), r (mixing ratio
 # in dimensionless units, kg/kg)
-  Tvir <- (AT+TZERO)*((1.+(StandardConstant("MWD")/StandardConstant("MWW")*r)/(1.+r)))-TZERO
+  Tvir <- (AT+TZERO)*((1. + r * StandardConstant("MWD") / 
+		       StandardConstant("MWW")) / (1 + r)) - TZERO
   return (Tvir)
 }
 
@@ -187,3 +189,49 @@ WetEquivalentPotentialTemperature <- function (P, AT, E=0, w=0) {
           * exp((Lv * r) / (cpt * Tk)))
 }
 
+#' @title potentialTemperatures
+#' @usage potentialTemperatures(DF)  # use $name to get desired function, before (DF)
+#' @description List of available potential temperature functions
+#' @details Contains PotentialTemperature, EquivalentPotentialTemperature,
+#' BoltonEquivalentPotentialTemperature, RossbyEquivalentPotentialTemperature,
+#' VirtualPotentialTemperature, and WetEquivalentPotentialTemperature
+#' in a list that can be used with lapply(potentialTemperatures, function(f) f(DF)) with DF a 
+#' data.frame containing PSXC, ATX, EWX, and optionally PLWCD (for WetEquivalentPotentialTemperature).
+#' To use individual functions: potentialTemperatures$EquivalentPotentialTemperature(DF)
+#' @aliases potentialTemperatures
+#' @author William Cooper
+#' @export potentialTemperatures
+#' @param DF A data.frame containing PSXC, ATX, EWX, and optionally PLWCD. If the latter
+#' is not present, zero is used for WetEquivalentPotentialTemperature.
+#' @return The function value: one of the listed potential temperatures. 
+#' More concise output is obtained from str(lapply(potentialTemperatures, function (f) f(DF), 
+#' digits.d = 5)
+#' @examples 
+#' PTS <- lapply(potentialTemperatures, function(f) 
+#'               f(RAFdata[, c('PSXC', 'ATX', 'EWX')]))
+#' ThetaV <- mean(potentialTemperatures$VirtualPotentialTemperature(
+#'                RAFdata[, c('PSXC', 'ATX', 'EWX')]))
+potentialTemperatures <- list(
+  PotentialTemperature = function(Data) as.vector(
+    PotentialTemperature(Data$PSXC, Data$ATX, Data$EWX)),
+  EquivalentPotentialTemperature = function(Data) as.vector(
+    EquivalentPotentialTemperature(Data$PSXC, Data$ATX, Data$EWX)),
+  BoltonEquivalentPotentialTemperature = function(Data) as.vector(
+    BoltonEquivalentPotentialTemperature(Data$PSXC, Data$ATX, Data$EWX)),
+  RossbyEquivalentPotentialTemperature = function(Data) as.vector(
+    RossbyEquivalentPotentialTemperature(Data$PSXC, Data$ATX, Data$EWX)),
+  VirtualPotentialTemperature = function(Data) as.vector(
+    VirtualPotentialTemperature(VirtualTemperature(
+      Data$ATX, 0.622 * Data$EWX / 
+        (Data$PSXC - Data$EWX)), Data$PSXC, Data$EWX)),
+  # VirtualTemperature = function(Data) as.vector(
+  #   VirtualTemperature(Data$ATX, 
+  #     0.622 * Data$EWX / (Data$PSXC - Data$EWX))),
+  WetEquivalentPotentialTemperature = function(Data) as.vector(
+    WetEquivalentPotentialTemperature(Data$PSXC, Data$ATX, Data$EWX, 
+      ifelse('PLWCD' %in% names(Data), Data$PLWCD, 0))
+)
+# lapply(potentialTemperatures, function(f) f(
+#   data.frame(PSXC=700, ATX=10, EWX=5, PLWCD=0.1)))
+
+)

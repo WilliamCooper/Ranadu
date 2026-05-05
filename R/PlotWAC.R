@@ -46,6 +46,24 @@ plotWAC <- function (x, y=NA, col="blue", xlab="TIME [UTC]",
   if (is.data.frame (x)) {
     if (!is.expression(ylab) && (ylab == "")) {
       ylab <- names(x)[2]
+      # print (attr(x[, ylab], 'label'))
+      if (!is.null (ylbl <- attr(x[, ylab], 'label'))) {
+        ylab <- ylbl
+        ## Convert to appropriate expressions where needed:
+        if (grepl('\\[deg C\\]', ylab)) {
+          ylab <- sub ('\\[deg C\\]', '', ylab)
+          ylab <- bquote(.(ylab) * ' [\u00b0C]')
+        } else if (grepl('m\\^-3\\]', ylab)) {
+          ylab <- sub ('m\\^-3\\]', '', ylab)
+          ylab <- bquote(paste(.(ylab),m^-3, ']'))
+        } else if (grepl('degree\\]', ylab)) {
+          ylab <- sub ('degree\\]', '', ylab)
+          ylab <- bquote(.(ylab) * '\u00b0]')
+        } else if (grepl('m s\\^-2\\]', ylab)) {
+          ylab <- sub('m s\\^-2\\]', '', ylab)
+          ylab <- bquote(paste(.(ylab),'m ',s^-2,']'))
+        }
+      }
     }
     ## protect against all-missing variables
     for (j in 2:min(7, length(x))) {
@@ -56,6 +74,8 @@ plotWAC <- function (x, y=NA, col="blue", xlab="TIME [UTC]",
     }
     yrange <- c(min(x[ ,2], na.rm=TRUE), max(x[ ,2], na.rm=TRUE))
     if (length(x) > 2) {
+      if (length(pch) == 1) {pch <- rep(pch, length(x)-1)}
+      if (length(cex) == 1) {cex <- rep(cex, length(x)-1)}
       for (j in 3:min(7, length(x))) {
         if (any (!is.na(x[ ,j]))) {
           yl <- min(x[ ,j], na.rm=TRUE)
@@ -76,13 +96,15 @@ plotWAC <- function (x, y=NA, col="blue", xlab="TIME [UTC]",
       x[, 1] <- x[, 1] + 0.5 / data.rate 
     }
     if (!("ylim" %in% names(list(...))) && (yrange[1] != yrange[2])) {
-      plot (dplyr::pull(x,1), dplyr::pull(x, 2), xaxt='n', yaxt='n', xlab=xlab, ylab=ylab, 
+      plot (dplyr::pull(x,1), dplyr::pull(x, 2), xaxt='n', yaxt='n', xlab=xlab, ylab='', 
         lwd=lwd, lty=lty, type=type, col=col[1], xaxs="r", yaxs="r", 
         log=logxy, ylim=c(yrange[1], yrange[2]), pch=pch[1], cex=cex[1], ...)
+      title(ylab=ylab, line=2.5, cex.lab=1)
     } else {
-      plot (x[ ,1], x[ ,2], xaxt='n', yaxt='n', xlab=xlab, ylab=ylab, 
+      plot (x[ ,1], x[ ,2], xaxt='n', yaxt='n', xlab=xlab, ylab='', 
         lwd=lwd, lty=lty, type=type, col=col[1], xaxs="r", yaxs="r", 
         log=logxy, pch=pch[1], cex=cex[1], ...)
+      title(ylab=ylab, line=2.5, cex.lab=1)
     }
     if (grepl ('x', logxy)) {
       atx <- axTicks(1)
@@ -156,8 +178,9 @@ plotWAC <- function (x, y=NA, col="blue", xlab="TIME [UTC]",
       if ((itg[2]-itg[1]) <= 0.025) {data.rate <- 50}
       x <- x + 0.5 / data.rate
     }
-    plot(x, y, xaxt='n', yaxt='n', xlab=xlab, ylab=ylab, lwd=lwd, 
+    plot(x, y, xaxt='n', yaxt='n', xlab=xlab, ylab='', lwd=lwd, 
       type=type, col=col, xaxs="r", yaxs="r", log=logxy, ...)
+    title(ylab=ylab, line=2.5, cex.lab=1)
     
     if (!is.expression(xlab)) {
       if (xlab == "TIME [UTC]") {
@@ -219,4 +242,3 @@ lineWAC <- function (x, y, col="blue", lwd=2, type='l', ...) {
   
   lines(x, y, lwd=lwd, col=col, ...)
 }
-
